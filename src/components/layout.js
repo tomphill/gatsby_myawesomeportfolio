@@ -1,7 +1,5 @@
 import React from 'react'
 import MainMenu from './MainMenu'
-
-import Header from './header'
 import styled, {createGlobalStyle} from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
