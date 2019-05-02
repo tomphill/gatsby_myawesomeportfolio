@@ -111,6 +111,55 @@ exports.createPages = ({ graphql, actions }) => {
           resolve()
         })
       })
-    // ==== END POSTS ====
+      // ==== END POSTS ====
+      // ==== BLOG POSTS ====
+      .then(() => {
+        graphql(`
+          {
+            allWordpressPost{
+              edges{
+                node{
+                  id
+                  title
+                  excerpt
+                  date
+                  modified
+                  content
+                  slug
+                  wordpress_id
+                }
+              }
+            }
+          }
+        `).then(result => {
+          const blogPostListTemplate = path.resolve('./src/templates/blogPostList.js');
+          const blogPostTemplate = path.resolve('./src/templates/blogPost.js');
+          const posts = result.data.allWordpressPost.edges
+          const postsPerPage = 3
+          const numberOfPages = Math.ceil(posts.length / postsPerPage)
+
+          _.each(posts, edge => {
+            createPage({
+              path: `/post/${edge.node.slug}`,
+              component: slash(blogPostTemplate),
+              context: edge.node
+            })
+          })
+
+          Array.from({length: numberOfPages}).forEach((page, index) => {
+            createPage({
+              path: index === 0 ? `/blog` : `/blog/${index + 1}`,
+              component: slash(blogPostListTemplate),
+              context: {
+                posts: posts.slice(index * postsPerPage, (index * postsPerPage) + postsPerPage),
+                numberOfPages,
+                currentPage: index + 1,
+              },
+            })
+          })
+
+          resolve()
+        })
+      })
   })
 }
