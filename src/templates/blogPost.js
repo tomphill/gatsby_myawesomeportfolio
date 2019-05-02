@@ -101,7 +101,7 @@ export default class extends React.Component {
     }
 
     commentsPerPage = 5
-    commentsApiUrl = 'http://142.93.120.232/wp-json/wp/v2/comments'
+    commentsApiUrl = process.env.GATSBY_COMMENTS_API_URL
 
     componentDidMount(){
         if(typeof window !== 'undefined'){
@@ -150,7 +150,6 @@ export default class extends React.Component {
                 author_email: commentEmail,
                 content: commentText
             }).then((result) => {
-                console.log(result.data)
                 this.setState({
                     comments: [result.data, ...this.state.comments]
                 })
