@@ -33,7 +33,6 @@ const ReadMoreLinkWrapper = styled.div`
 
 export default ({pageContext}) => (
     <Layout>
-        {console.log(pageContext)}
         {pageContext.posts.map(post => (
             <PostListItem key={post.node.id}>
                 <h3 dangerouslySetInnerHTML={{__html: post.node.title}} />
